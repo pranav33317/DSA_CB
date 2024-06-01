@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+void print_array(int arr[], int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+int *merge_arrays(int arr1[], int arr2[], int size1, int size2)
+{
+    // instead of filling from start , fill from the last
+    // fill the bigger elements first and then the smaller elements
+    int point1 = size1 - size2 - 1;
+    int point2 = size2 - 1;
+    int filler_pointer = size1 - 1;
+    while (point1 >= 0 and point2 >= 0)
+    {
+        if (arr1[point1] > arr2[point2])
+        {
+            arr1[filler_pointer--] = arr1[point1];
+            point1--;
+        }
+        else if (arr1[point1] < arr2[point2])
+        {
+            arr1[filler_pointer--] = arr2[point2];
+            point2--;
+        }
+        else
+        {
+            arr1[filler_pointer--] = arr1[point1];
+            point1--;
+            arr1[filler_pointer--] = arr2[point2];
+            point2--;
+        }
+    }
+    while (point2 >= 0)
+    {
+        arr1[filler_pointer--] = arr2[point2];
+        point2--;
+    }
+    return arr1;
+}
+int main()
+{
+    // enter m and n , one array is m+n length and second n
+    int m, n;
+    cin >> m >> n;
+    int *arr1 = new int[m + n];
+    int *arr2 = new int[n];
+    cout << " Enter m numbers " << endl;
+    for (int i = 0; i < m; i++)
+    {
+        cin >> arr1[i];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr2[i];
+    }
+    arr1 = merge_arrays(arr1, arr2, m + n, n);
+    print_array(arr1, m + n);
+    delete[] arr1;
+    delete[] arr2;
+    return 0;
+}
